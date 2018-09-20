@@ -9,6 +9,10 @@ namespace ComicBooks.Models
 {
     public class ComicBook
     {
+        public ComicBook()
+        {
+            Artists= new List<Artist>();
+        }
         public int  Id { get; set; }
         //Series enity is principal
         //Comic book is dependent upon a series
@@ -19,6 +23,9 @@ namespace ComicBooks.Models
         public string  Description { get; set; }
         public DateTime  PublishedOn { get; set; }
         public decimal  AverageRating { get; set; }
+
+        // many to many Relationship
+        public ICollection<Artist> Artists { get; set; }
 
         //Display Text
         //getter propety ignored by Ef

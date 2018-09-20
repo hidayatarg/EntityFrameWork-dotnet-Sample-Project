@@ -15,35 +15,76 @@ namespace ComicBooks
         {
             using (var context= new Context())
             {
-
-                Series series= new Series()
+                //var type
+                Series series1= new Series()
                 {
                     Title = "The amazing spideman"
                 };
 
-                context.ComicBooks.Add(new ComicBook()
+                Series series2= new Series()
                 {
-                    Series= series,
+                    Title = "The amazing spideman"
+                };
+
+                var artist1 = new Artist()
+                {
+                    Name = "Stev Lee"
+                };
+                var artist2 = new Artist()
+                {
+                    Name = "Leon Koweski"
+                };
+                var artist3 = new Artist()
+                {
+                    Name = "Jack Koweski"
+                };
+
+                var comicBook1 = new ComicBook()
+                {
+                    Series = series1,
                     IssueNumber = 1,
                     PublishedOn = DateTime.Today
-                });
+                };
+                comicBook1.Artists.Add(artist1);
+                comicBook1.Artists.Add(artist2);
 
-                context.ComicBooks.Add(new ComicBook()
+
+                var comicBook2= new ComicBook()
                 {
-                    Series = series,
+                    Series = series2,
                     IssueNumber = 2,
                     PublishedOn = DateTime.Today
-                });
+                };
+
+                comicBook2.Artists.Add(artist1);
+                comicBook2.Artists.Add(artist2);
+                var comicBook3 = new ComicBook()
+                {
+                    Series = series2,
+                    IssueNumber = 1,
+                    PublishedOn = DateTime.Today
+                };
+
+                comicBook3.Artists.Add(artist1);
+                comicBook3.Artists.Add(artist2);
+
+                context.ComicBooks.Add(comicBook1);
+                context.ComicBooks.Add(comicBook2);
+                context.ComicBooks.Add(comicBook3);
 
                 context.SaveChanges();
 
                 var comicBooks = context.ComicBooks
                     .Include(cb=>cb.Series)
+                    .Include(cb=>cb.Artists)
                     .ToList();
                 foreach (var comicBook in comicBooks)
                 {
+                    var artistNames = comicBook.Artists.Select(a => a.Name).ToList();
+                    var artistDisplayText = string.Join(", ", artistNames);
                     Console.WriteLine(comicBook.Series.Title);
                     Console.WriteLine(comicBook.DisplayText);
+                    Console.WriteLine(artistDisplayText);
                 }
             }
         }
