@@ -53,6 +53,9 @@ public class ComicBook
 ```
 
 But this can be made cleaner and easier with entity framework
+
+A foreign key property named SeriesId of type int
+A navigation property named Series of type Series
 ```sh
 public class ComicBook
 {
@@ -73,5 +76,25 @@ public class ComicBook
     {
         get { return $"{Series?.Title} #{IssueNumber}"; }
     }
+}
+```
+
+A navigation collection property named ComicBooks of type ICollection<ComicBook>
+A default constructor that initializes the ComicBooks property to an instance of List<ComicBook>
+
+```sh
+public class Series
+{
+    // initailize the constructor
+    public Series()
+    {
+        ComicBooks=new List<ComicBook>();
+    }      
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+
+    // a Series can be associated to many commic book
+    public ICollection<ComicBook> ComicBooks { get; set; }
 }
 ```
