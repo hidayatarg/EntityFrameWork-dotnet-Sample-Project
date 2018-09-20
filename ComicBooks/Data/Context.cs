@@ -10,6 +10,10 @@ namespace ComicBooks.Data
 {
    public class Context:DbContext
     {
+        //public Context() : base("DB name or connection string") class we can add the connection string 
+        //{
+            
+        //}
         public DbSet<ComicBook> ComicBooks { get; set; }
     }
 }
