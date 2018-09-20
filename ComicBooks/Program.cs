@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ComicBooks.Data;
+using ComicBooks.Models;
 
 namespace ComicBooks
 {
@@ -10,12 +12,22 @@ namespace ComicBooks
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            using (var context= new Context())
+            {
+                context.ComicBooks.Add(new ComicBook()
+                {
+                    SeriesTitle = "The amazing spider man",
+                    IssueNumber = 1,
+                    PublishedOn = DateTime.Today
+                });
+                context.SaveChanges();
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+                var comicBooks = context.ComicBooks.ToList();
+                foreach (var comicBook in comicBooks)
+                {
+                    Console.WriteLine(comicBook.SeriesTitle);
+                }
+            }
         }
     }
 }
