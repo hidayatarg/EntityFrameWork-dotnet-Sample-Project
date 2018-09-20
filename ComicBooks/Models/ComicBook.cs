@@ -17,5 +17,12 @@ namespace ComicBooks.Models
         public string  Description { get; set; }
         public DateTime  PublishedOn { get; set; }
         public decimal  AverageRating { get; set; }
+
+        //Display Text
+        //getter propety ignored by Ef
+        public string DisplayText
+        {
+            get { return $"{Series?.Title} #{IssueNumber}"; }
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ComicBooks.Data;
 using ComicBooks.Models;
+using System.Data.Entity;
 
 namespace ComicBooks
 {
@@ -16,16 +17,33 @@ namespace ComicBooks
             {
                 context.ComicBooks.Add(new ComicBook()
                 {
-                    SeriesTitle = "The amazing spider man",
+                    Series= new Series()
+                    {
+                        Title = "The amazing spider man"
+                    },
                     IssueNumber = 1,
                     PublishedOn = DateTime.Today
                 });
+
+                context.ComicBooks.Add(new ComicBook()
+                {
+                    Series = new Series()
+                    {
+                        Title = "The man"
+                    },
+                    IssueNumber = 2,
+                    PublishedOn = DateTime.Today
+                });
+
                 context.SaveChanges();
 
-                var comicBooks = context.ComicBooks.ToList();
+                var comicBooks = context.ComicBooks
+                    .Include(cb=>cb.Series)
+                    .ToList();
                 foreach (var comicBook in comicBooks)
                 {
-                    Console.WriteLine(comicBook.SeriesTitle);
+                    Console.WriteLine(comicBook.Series.Title);
+                    Console.WriteLine(comicBook.DisplayText);
                 }
             }
         }
