@@ -15,22 +15,22 @@ namespace ComicBooks
         {
             using (var context= new Context())
             {
+
+                Series series= new Series()
+                {
+                    Title = "The amazing spideman"
+                };
+
                 context.ComicBooks.Add(new ComicBook()
                 {
-                    Series= new Series()
-                    {
-                        Title = "The amazing spider man"
-                    },
+                    Series= series,
                     IssueNumber = 1,
                     PublishedOn = DateTime.Today
                 });
 
                 context.ComicBooks.Add(new ComicBook()
                 {
-                    Series = new Series()
-                    {
-                        Title = "The man"
-                    },
+                    Series = series,
                     IssueNumber = 2,
                     PublishedOn = DateTime.Today
                 });
