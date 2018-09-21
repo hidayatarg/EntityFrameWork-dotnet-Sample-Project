@@ -205,3 +205,17 @@ var comicBooks = context.ComicBooks
                 .Include(cb=>cb.Artists.Select(a=>a.Role))
                 .ToList();
 ```
+## Data Annotations to Refine the Generated Database
+We use data annotations
+> use StringLength in place of maxlenght becuase max length is not working with validations.
+
+## [Table("Talent")]
+Define the table name in the corresponding database
+
+## Column name
+ [Required, StringLength(100), Column("FullName")]
+  public string Name { get; set; }
+  
+  [NotMapped]
+  It is ignored by entityframework 
+  EntityFramework will automatically ignore properties that doesn`t have setter
