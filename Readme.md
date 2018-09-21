@@ -219,3 +219,28 @@ Define the table name in the corresponding database
   [NotMapped]
   It is ignored by entityframework 
   EntityFramework will automatically ignore properties that doesn`t have setter
+
+## Overriding the Context's OnModelCreating Method
+we can customize EF's conventions and use EF's fluent API to refine our model.
+
+
+> 123.45 Precision=5 and scale=2   Average rating
+## Fluent API
+```sh
+protected override void OnModelCreating(DbModelBuilder modelBuilder)
+{
+            
+    // remove pluralize conditions
+    modelBuilder.Conventions.Remove<PluralizingEntitySetNameConvention>();
+
+    /*  // For Average Rating 
+    modelBuilder.Conventions.Remove<DecimalPropertyConvention>();
+    modelBuilder.Conventions.Add(new DecimalPropertyConvention(5,2));
+    */
+    //Bu using fluent API
+    modelBuilder.Entity<ComicBook>()
+        .Property(cb => cb.AverageRating)
+        .HasPrecision(5, 2);
+}
+```
+
