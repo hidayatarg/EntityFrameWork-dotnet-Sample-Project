@@ -236,7 +236,7 @@ protected override void OnModelCreating(DbModelBuilder modelBuilder)
     /*  // For Average Rating 
     modelBuilder.Conventions.Remove<DecimalPropertyConvention>();
     modelBuilder.Conventions.Add(new DecimalPropertyConvention(5,2));
-    */
+    */ 
     //Bu using fluent API
     modelBuilder.Entity<ComicBook>()
         .Property(cb => cb.AverageRating)
@@ -244,3 +244,11 @@ protected override void OnModelCreating(DbModelBuilder modelBuilder)
 }
 ```
 
+## Seed 
+Seed method is called after the database is created
+we created the DatabaseInitializer in the main tree of program
+in context we changed the following
+
+```sh
+		 Database.SetInitializer(new DatabaseInitializer());
+		```
