@@ -39,14 +39,24 @@ namespace ComicBooks
                     Name = "Jack Koweski"
                 };
 
+                var role1 = new Role()
+                {
+                    Name = "script"
+                };
+                var role2 = new Role()
+                {
+                    Name = "Pencils"
+                };
+
                 var comicBook1 = new ComicBook()
                 {
                     Series = series1,
                     IssueNumber = 1,
                     PublishedOn = DateTime.Today
                 };
-                comicBook1.Artists.Add(artist1);
-                comicBook1.Artists.Add(artist2);
+
+                comicBook1.AddArtist(artist1, role1);
+                comicBook1.AddArtist(artist2, role2);
 
 
                 var comicBook2= new ComicBook()
@@ -56,8 +66,8 @@ namespace ComicBooks
                     PublishedOn = DateTime.Today
                 };
 
-                comicBook2.Artists.Add(artist1);
-                comicBook2.Artists.Add(artist2);
+                comicBook2.AddArtist(artist1, role1);
+                comicBook2.AddArtist(artist2, role2);
                 var comicBook3 = new ComicBook()
                 {
                     Series = series2,
@@ -65,8 +75,8 @@ namespace ComicBooks
                     PublishedOn = DateTime.Today
                 };
 
-                comicBook3.Artists.Add(artist1);
-                comicBook3.Artists.Add(artist2);
+                comicBook3.AddArtist(artist1, role1);
+                comicBook3.AddArtist(artist3, role2);
 
                 context.ComicBooks.Add(comicBook1);
                 context.ComicBooks.Add(comicBook2);
@@ -76,16 +86,20 @@ namespace ComicBooks
 
                 var comicBooks = context.ComicBooks
                     .Include(cb=>cb.Series)
-                    .Include(cb=>cb.Artists)
+                    .Include(cb=>cb.Artists.Select(a=>a.Artist))
+                    .Include(cb=>cb.Artists.Select(a=>a.Role))
                     .ToList();
                 foreach (var comicBook in comicBooks)
                 {
-                    var artistNames = comicBook.Artists.Select(a => a.Name).ToList();
-                    var artistDisplayText = string.Join(", ", artistNames);
-                    Console.WriteLine(comicBook.Series.Title);
+                    var artistRoleNames = comicBook.Artists
+                        .Select(a => $"{a.Artist.Name} - {a.Role.Name}").ToList();
+                    var artistDisplayText = string.Join(", ", artistRoleNames);
+                   // Console.WriteLine(comicBook.Series.Title);
                     Console.WriteLine(comicBook.DisplayText);
                     Console.WriteLine(artistDisplayText);
                 }
+
+                Console.ReadLine();
             }
         }
     }

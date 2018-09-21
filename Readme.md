@@ -145,3 +145,63 @@ public class ComicBook
 
 A new table is maded by the many to many relationship , (Junction, linking, bridges)
 Called ArtistComicBook
+
+## Bridge Entity Class
+Sometimes we add extra property to the classes so we add the bridge table explicitly.
+First we add the role table
+```sh
+public class Role
+{
+    public int  Id { get; set; }
+    public string  Name { get; set; }
+}
+```
+and ComicBookArtist
+```sh
+public class ComicBookArtist
+{
+    public int Id { get; set; }
+    // Foreign Key Property
+    public int ComicBookId { get; set; }
+    public int ArtistId { get; set; }
+    public int RoleId { get; set; }
+
+    // Navigation Properties
+    public ComicBook ComicBook { get; set; }
+    public Artist Artist { get; set; }
+    public Role Role { get; set; }
+}
+```
+
+Now we need to update the ComicBook and Artist class Properties to the ComicBookArtist class
+
+>> we do this because we want to add the bridge table a role Id.
+
+in the ComicBook class since we will add comic book and each comic book with an artist and apply a specific *(explicit rule for each artist)
+```sh
+ // method to add artist a specific Role 
+public void AddArtist(Artist artist, Role role)
+{
+    Artists.Add(new ComicBookArtist()
+    {
+        Artist = artist,
+        Role = role
+    });
+}
+```
+
+and in the program.cs
+```sh
+    comicBook3.AddArtist(artist1, role1);
+    comicBook3.AddArtist(artist2, role2);
+``` 
+
+here we use Select to find the path to the child property
+and we update the query
+```sh
+var comicBooks = context.ComicBooks
+                .Include(cb=>cb.Series)
+                .Include(cb=>cb.Artists.Select(a=>a.Artist))
+                .Include(cb=>cb.Artists.Select(a=>a.Role))
+                .ToList();
+```

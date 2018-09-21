@@ -11,7 +11,7 @@ namespace ComicBooks.Models
     {
         public ComicBook()
         {
-            Artists= new List<Artist>();
+            Artists= new List<ComicBookArtist>();
         }
         public int  Id { get; set; }
         //Series enity is principal
@@ -25,13 +25,23 @@ namespace ComicBooks.Models
         public decimal  AverageRating { get; set; }
 
         // many to many Relationship
-        public ICollection<Artist> Artists { get; set; }
+        public ICollection<ComicBookArtist> Artists { get; set; }
 
         //Display Text
         //getter propety ignored by Ef
         public string DisplayText
         {
             get { return $"{Series?.Title} #{IssueNumber}"; }
+        }
+
+        // method to add artist a specific Role 
+        public void AddArtist(Artist artist, Role role)
+        {
+            Artists.Add(new ComicBookArtist()
+            {
+                Artist = artist,
+                Role = role
+            });
         }
     }
 }
