@@ -148,7 +148,10 @@ Called ArtistComicBook
 
 ## Bridge Entity Class
 Sometimes we add extra property to the classes so we add the bridge table explicitly.
-First we add the role table
+First we add the role table.
+When defining a many-to-many relationship without defining an explicit bridge entity class, Entity Framework will automatically add an "implicit" bridge table to the database in order to store the relationship data.
+Defining an explicit Many-to-Many bridge entity class allows you to include additional properties beyond the properties that are needed to define the relationship.
+navigation properties allow you to define relationships between entities.
 ```sh
 public class Role
 {
