@@ -270,4 +270,43 @@ var comicBooks = comicBooksQuery.ToList();
 Console.WriteLine("the number of comicbooks{0}", comicBooks.Count);
 
 
-the Type for comicBooks here is IQueryable
+the Type for comicBooks here is IQueryable need toList 
+
+### Filtering Query
+```sh
+var comicBookI = context.ComicBooks.Where(cb => cb.IssueNumber == 1).ToList();
+Console.WriteLine(comicBookI.Count);
+// display the names
+foreach (var comicbooki in comicBookI)
+{
+    Console.WriteLine(comicbooki.DisplayText);
+}
+```
+Even we can add include with context to get the series title if we want
+
+
+```sh
+var comicBookI = context.ComicBooks
+    .Include(cb=>cb.Series)
+    .Where(cb => cb.IssueNumber == 1 && cb.Series.Title=="The amazing Spiderman").ToList();
+Console.WriteLine(comicBookI.Count);
+// display the names
+foreach (var comicbooki in comicBookI)
+{
+    Console.WriteLine(comicbooki.DisplayText);
+}
+```
+
+Contain
+```sh
+ //Filtering Query
+var comicBookI = context.ComicBooks
+    .Include(cb=>cb.Series)
+    .Where(cb =>cb.Series.Title.Contains("The amazing spider")).ToList();
+Console.WriteLine(comicBookI.Count);
+// display the names
+foreach (var comicbooki in comicBookI)
+{
+    Console.WriteLine(comicbooki.DisplayText);
+}
+```

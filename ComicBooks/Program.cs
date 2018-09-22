@@ -26,6 +26,21 @@ namespace ComicBooks
                 var comicBooks = comicBooksQuery.ToList();
                 Console.WriteLine("the number of comicbooks{0}", comicBooks.Count);
 
+
+                //Filtering Query
+                var comicBookI = context.ComicBooks
+                    .Include(cb=>cb.Series)
+                    .Where(cb =>cb.Series.Title.Contains("The amazing spider")).ToList();
+                Console.WriteLine(comicBookI.Count);
+                // display the names
+                foreach (var comicbooki in comicBookI)
+                {
+                    Console.WriteLine(comicbooki.DisplayText);
+                }
+
+
+
+
                 //var comicBooks = context.ComicBooks
                 //    .Include(cb=>cb.Series)
                 //    .Include(cb=>cb.Artists.Select(a=>a.Artist))
