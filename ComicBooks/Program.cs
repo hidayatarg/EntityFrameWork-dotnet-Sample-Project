@@ -30,7 +30,9 @@ namespace ComicBooks
                 //Filtering Query
                 var comicBookI = context.ComicBooks
                     .Include(cb=>cb.Series)
-                    .Where(cb =>cb.Series.Title.Contains("The amazing spider")).ToList();
+                    .OrderByDescending(cb=>cb.IssueNumber)
+                    .ThenBy(cb=>cb.PublishedOn)
+                    .ToList();
                 Console.WriteLine(comicBookI.Count);
                 // display the names
                 foreach (var comicbooki in comicBookI)

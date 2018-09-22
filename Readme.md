@@ -310,3 +310,48 @@ foreach (var comicbooki in comicBookI)
     Console.WriteLine(comicbooki.DisplayText);
 }
 ```
+
+### Sorting Query
+```sh
+var comicBookI = context.ComicBooks
+    .Include(cb=>cb.Series)
+    .OrderByDescending(cb=>cb.IssueNumber)
+    .ToList();
+	Console.WriteLine(comicBookI.Count);
+
+	foreach (var comicbooki in comicBookI)
+	{
+		Console.WriteLine(comicbooki.DisplayText);
+	}
+
+```
+Order by will be used
+```sh
+var comicBookI = context.ComicBooks
+        .Include(cb=>cb.Series)
+        .OrderByDescending(cb=>cb.IssueNumber)
+        .OrderBy(cb=>cb.PublishedOn)
+        .ToList();
+    Console.WriteLine(comicBookI.Count);
+    // display the names
+    foreach (var comicbooki in comicBookI)
+    {
+        Console.WriteLine(comicbooki.DisplayText);
+    }
+```
+If you want to sort by more
+
+```sh
+var comicBookI = context.ComicBooks
+        .Include(cb=>cb.Series)
+        .OrderByDescending(cb=>cb.IssueNumber)
+        .ThenBy(cb=>cb.PublishedOn)
+        .ToList();
+    Console.WriteLine(comicBookI.Count);
+    // display the names
+    foreach (var comicbooki in comicBookI)
+    {
+        Console.WriteLine(comicbooki.DisplayText);
+    }
+```
+You see the result query that is executed from the Output
