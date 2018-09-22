@@ -18,17 +18,19 @@ namespace ComicBooks.Models
         //Comic book is dependent upon a series
         //many to one relationship
         public int SeriesId { get; set; }
-        public Series  Series { get; set; }
+        
         public int  IssueNumber { get; set; }
         public string  Description { get; set; }
         public DateTime  PublishedOn { get; set; }
         public decimal  AverageRating { get; set; }
 
+        // navigation
+        public virtual Series Series { get; set; }
         // many to many Relationship
-        public ICollection<ComicBookArtist> Artists { get; set; }
+        public virtual ICollection<ComicBookArtist> Artists { get; set; }
 
-        //Display Text
-        //getter propety ignored by Ef
+        // Display Text
+        // getter propety ignored by Ef
         public string DisplayText
         {
             get { return $"{Series?.Title} #{IssueNumber}"; }

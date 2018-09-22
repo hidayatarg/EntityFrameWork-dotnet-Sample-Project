@@ -355,3 +355,65 @@ var comicBookI = context.ComicBooks
     }
 ```
 You see the result query that is executed from the Output
+
+## Loading the Related Entities
+### Methods for Loading Related Entities
+-Eager Loading: you can write a single query that not only retrieves the data for the main entity, but also the data for the related entities.The include method is used to tell EF which related entities to load.
+-Lazy Loading: the related entities are not loaded until their navigation properties are accessed. The process of lazily loading related entities is automatically handled by EF.
+-Explicit Loading : an alternative to lazy loading you can also explicitly load related entities using the load method.
+with lazy loading we will add the virual keyword with the Navigation properties
+with eager loading EF was executing a single query to retrive the related data, but with
+Lazy Loading multiple queries are executed in order tor retrive the data.
+
+```sh
+public class ComicBook
+{
+    public ComicBook()
+    {
+        Artists= new List<ComicBookArtist>();
+    }
+    public int  Id { get; set; }
+    //Series enity is principal
+    //Comic book is dependent upon a series
+    //many to one relationship
+    public int SeriesId { get; set; }
+        
+    public int  IssueNumber { get; set; }
+    public string  Description { get; set; }
+    public DateTime  PublishedOn { get; set; }
+    public decimal  AverageRating { get; set; }
+
+    // navigation
+    public virtual Series Series { get; set; }
+    // many to many Relationship
+    public virtual ICollection<ComicBookArtist> Artists { get; set; }
+
+    // Display Text
+    // getter propety ignored by Ef
+    public string DisplayText
+    {
+        get { return $"{Series?.Title} #{IssueNumber}"; }
+    }
+}
+```
+
+and 
+
+```sh
+namespace ComicBooks.Models
+{
+	public class ComicBookArtist
+	{
+		public int Id { get; set; }
+		// Foreign Key Property
+		public int ComicBookId { get; set; }
+		public int ArtistId { get; set; }
+		public int RoleId { get; set; }
+
+		// Navigation Properties
+		public virtual ComicBook ComicBook { get; set; }
+		public virtual Artist Artist { get; set; }
+		public virtual Role Role { get; set; }
+	}
+}
+```

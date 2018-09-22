@@ -18,45 +18,20 @@ namespace ComicBooks
             {
                 context.Database.Log= (message) => Debug.WriteLine(message);
 
-                //var comicBooks = context.ComicBooks.ToList();
-                
-
-                //Linq query 
-                var comicBooksQuery = from cb in context.ComicBooks select cb;
-                var comicBooks = comicBooksQuery.ToList();
-                Console.WriteLine("the number of comicbooks{0}", comicBooks.Count);
-
-
-                //Filtering Query
-                var comicBookI = context.ComicBooks
-                    .Include(cb=>cb.Series)
-                    .OrderByDescending(cb=>cb.IssueNumber)
-                    .ThenBy(cb=>cb.PublishedOn)
+                var comicBooks = context.ComicBooks
+                    //.Include(cb => cb.Series)
+                    //.Include(cb => cb.Artists.Select(a => a.Artist))
+                    //.Include(cb => cb.Artists.Select(a => a.Role))
                     .ToList();
-                Console.WriteLine(comicBookI.Count);
-                // display the names
-                foreach (var comicbooki in comicBookI)
+                foreach (var comicBook in comicBooks)
                 {
-                    Console.WriteLine(comicbooki.DisplayText);
+                    var artistRoleNames = comicBook.Artists
+                        .Select(a => $"{a.Artist.Name} - {a.Role.Name}").ToList();
+                    var artistDisplayText = string.Join(", ", artistRoleNames);
+                    // Console.WriteLine(comicBook.Series.Title);
+                    Console.WriteLine(comicBook.DisplayText);
+                    Console.WriteLine(artistDisplayText);
                 }
-
-
-
-
-                //var comicBooks = context.ComicBooks
-                //    .Include(cb=>cb.Series)
-                //    .Include(cb=>cb.Artists.Select(a=>a.Artist))
-                //    .Include(cb=>cb.Artists.Select(a=>a.Role))
-                //    .ToList();
-                //foreach (var comicBook in comicBooks)
-                //{
-                //    var artistRoleNames = comicBook.Artists
-                //        .Select(a => $"{a.Artist.Name} - {a.Role.Name}").ToList();
-                //    var artistDisplayText = string.Join(", ", artistRoleNames);
-                //   // Console.WriteLine(comicBook.Series.Title);
-                //    Console.WriteLine(comicBook.DisplayText);
-                //    Console.WriteLine(artistDisplayText);
-                //}
 
                 Console.ReadLine();
             }
