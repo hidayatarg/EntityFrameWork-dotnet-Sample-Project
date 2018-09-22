@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ComicBooks.Data;
 using ComicBooks.Models;
 using System.Data.Entity;
+using System.Diagnostics;
 
 namespace ComicBooks
 {
@@ -15,20 +16,30 @@ namespace ComicBooks
         {
             using (var context= new Context())
             {
-                var comicBooks = context.ComicBooks
-                    .Include(cb=>cb.Series)
-                    .Include(cb=>cb.Artists.Select(a=>a.Artist))
-                    .Include(cb=>cb.Artists.Select(a=>a.Role))
-                    .ToList();
-                foreach (var comicBook in comicBooks)
-                {
-                    var artistRoleNames = comicBook.Artists
-                        .Select(a => $"{a.Artist.Name} - {a.Role.Name}").ToList();
-                    var artistDisplayText = string.Join(", ", artistRoleNames);
-                   // Console.WriteLine(comicBook.Series.Title);
-                    Console.WriteLine(comicBook.DisplayText);
-                    Console.WriteLine(artistDisplayText);
-                }
+                context.Database.Log= (message) => Debug.WriteLine(message);
+
+                //var comicBooks = context.ComicBooks.ToList();
+                
+
+                //Linq query 
+                var comicBooksQuery = from cb in context.ComicBooks select cb;
+                var comicBooks = comicBooksQuery.ToList();
+                Console.WriteLine("the number of comicbooks{0}", comicBooks.Count);
+
+                //var comicBooks = context.ComicBooks
+                //    .Include(cb=>cb.Series)
+                //    .Include(cb=>cb.Artists.Select(a=>a.Artist))
+                //    .Include(cb=>cb.Artists.Select(a=>a.Role))
+                //    .ToList();
+                //foreach (var comicBook in comicBooks)
+                //{
+                //    var artistRoleNames = comicBook.Artists
+                //        .Select(a => $"{a.Artist.Name} - {a.Role.Name}").ToList();
+                //    var artistDisplayText = string.Join(", ", artistRoleNames);
+                //   // Console.WriteLine(comicBook.Series.Title);
+                //    Console.WriteLine(comicBook.DisplayText);
+                //    Console.WriteLine(artistDisplayText);
+                //}
 
                 Console.ReadLine();
             }

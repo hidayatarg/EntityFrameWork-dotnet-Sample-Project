@@ -254,4 +254,20 @@ in context we changed the following
 
 ```sh
 		 Database.SetInitializer(new DatabaseInitializer());
-		```
+```
+
+# List Queries
+```sh
+context.Database.Log = (message) => Debug.WriteLine(message);
+var comicBooks = context.ComicBooks.ToList();
+Console.WriteLine("the number of comicbooks{0}",comicBooks.Count);
+```
+From the output pannel see the query that is executed from the Output window.
+
+## Linq query 
+var comicBooksQuery = from cb in context.ComicBooks select cb;
+var comicBooks = comicBooksQuery.ToList();
+Console.WriteLine("the number of comicbooks{0}", comicBooks.Count);
+
+
+the Type for comicBooks here is IQueryable
