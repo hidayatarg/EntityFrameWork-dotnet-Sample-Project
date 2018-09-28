@@ -417,3 +417,29 @@ namespace ComicBooks.Models
 	}
 }
 ```
+
+## Detail Queries
+> Find
+to retrive a single entity we use dbset find method
+```sh
+var comicBookId = 1;
+var comicBook = context.ComicBooks.Find(comicBookId);
+```
+or we can use the where operator
+SingleorDefault find the entity 
+FirstorDefault find the first matching entity  if more than one is found.
+```sh
+var comicBook = context.ComicBooks
+	.where(cb=>cb.Id==comicBookId)
+	.SingleOrDefault();
+```
+-Single
+-First
+we suggest using dbset queries over find method
+```sh
+ var comicBooks = context.ComicBooks
+              .Include(cb => cb.Series)
+              .Include(cb => cb.Artists.Select(a => a.Artist))
+              .Include(cb => cb.Artists.Select(a => a.Role))
+              .ToList();
+```
