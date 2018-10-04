@@ -445,6 +445,16 @@ we suggest using dbset queries over find method
 ```
 
 
+
+
+
+### DAL (Data Access Layer)
+under this layer we have Repository, Context, Database initializer
+
+### Entities 
+a layer contains entities.
+
+
 ## Repository 
 All of the code that interact with the Entity framework context class into its own class that is named Repository class.
 We are using the repository class instead of using the context class directly.
@@ -454,9 +464,124 @@ We are using the repository class instead of using the context class directly.
   -Update
   -Delete
 
+In Repository.cs, GetContext method to get the method 
+```sh
+static Context GetContext()
+{
+    var context= new Context();
+    
+    //Print a log to the output window
+    context.Database.Log = (messag) => Debug.WriteLine(messag);
+    return context;
+}
+```
 
-### DAL (Data Access Layer)
-under this layer we have Repository, Context, Database initializer
+##### Adding Method for this project
+```sh
+public static void Add(ComicBook comicBook)
+{
+    using (Context context = GetContext())
+    {
+        context.ComicBooks.Add(comicBook);
+        if (comicBook.Series != null && comicBook.Series.Id > 0)
+        {
+            context.Entry(comicBook.Series).State = EntityState.Unchanged;
+        }
+        context.SaveChanges();
+    }
+}
+```
+##### Add method structure (Generally used in EF)
+```sh
+public static void Add(ComicBook comicBook)
+{
+    using (Context context = new Context())
+    {
+        context.ComicBooks.Add(comicBook);      
+        context.SaveChanges();
+    }
+}
+```
 
-### Entities 
-a layer contains entities.
+##### Update method (1) for this project
+Here we equalize the entities to the update values entered by the user.
+```sh
+public static void Update(ComicBook comicBook)
+{
+    using (Context context = GetContext())
+    {
+        ComicBook comicBookToUpdate = context.ComicBooks.Find(comicBook.Id);
+        if (comicBookToUpdate != null)
+        {
+            comicBookToUpdate.SeriesId = comicBook.SeriesId;
+            comicBookToUpdate.IssueNumber = comicBook.IssueNumber;
+            comicBookToUpdate.Description = comicBook.Description;
+            comicBookToUpdate.PublishedOn = comicBook.PublishedOn;
+            comicBookToUpdate.AverageRating = comicBook.AverageRating;
+        }
+
+        context.SaveChanges();
+    }
+}
+```
+##### Update method (2) for this project (EF)
+Here we attach the comic book to the entity. and then we confirm that is enity was updated.
+```sh
+public static void Update(ComicBook comicBook)
+{
+    using (Context context = GetContext())
+    {
+        context.ComicBooks.Attach(comicBook);
+        var comicBookEntry = context.Entry(comicBook);
+        comicBookEntry.State = EntityState.Modified;
+        context.SaveChanges();
+    }
+}
+```
+
+
+> Note: There might be cases that some entities are not updated so then the upper code will be like
+> 
+```sh    
+        context.ComicBooks.Attach(comicBook);
+        var comicBookEntry = context.Entry(comicBook);
+        comicBookEntry.State = EntityState.Modified;
+        comicBookEntry.Property("IssueNumber").IsModified = False;
+
+        context.SaveChanges(); 
+```
+   
+
+##### Delete method (1) for this project
+The input parameter to this method should be an interger of Comic Book Id. the find method will find the comic book with the related input comicBookId. Then remove that comic book.
+```sh
+public static void Delete(int comicBookId)
+{
+    using (Context context = GetContext())
+    {
+        ComicBook comicBook = context.ComicBooks.Find(comicBookId);
+        context.ComicBooks.Remove(comicBook);
+        context.SaveChanges();
+    }
+}
+```
+
+##### Delete method (2) for this project (EF)
+We are not attching the entity, bwhen calling the context entry method.
+If the passed in entity is not in the context EF will attach it and set its state to unchanged
+```sh
+public static void Delete(int comicBookId)
+{
+    using (Context context = GetContext())
+    {
+        ComicBook comicBook= new ComicBook(){Id=comicBookId};
+        context.Entry(comicBook).State = EntityState.Deleted;
+        context.SaveChanges();
+    }
+}
+```
+
+There are other ORM 
+
+    Nhibernate 
+    Dapper
