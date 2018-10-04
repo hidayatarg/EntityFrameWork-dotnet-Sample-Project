@@ -468,11 +468,11 @@ In Repository.cs, GetContext method to get the method
 ```sh
 static Context GetContext()
 {
-    var context= new Context();
-    
-    //Print a log to the output window
-    context.Database.Log = (messag) => Debug.WriteLine(messag);
-    return context;
+	var context= new Context();
+	
+	//Print a log to the output window
+	context.Database.Log = (messag) => Debug.WriteLine(messag);
+	return context;
 }
 ```
 
@@ -480,26 +480,26 @@ static Context GetContext()
 ```sh
 public static void Add(ComicBook comicBook)
 {
-    using (Context context = GetContext())
-    {
-        context.ComicBooks.Add(comicBook);
-        if (comicBook.Series != null && comicBook.Series.Id > 0)
-        {
-            context.Entry(comicBook.Series).State = EntityState.Unchanged;
-        }
-        context.SaveChanges();
-    }
+	using (Context context = GetContext())
+	{
+		context.ComicBooks.Add(comicBook);
+		if (comicBook.Series != null && comicBook.Series.Id > 0)
+		{
+			context.Entry(comicBook.Series).State = EntityState.Unchanged;
+		}
+		context.SaveChanges();
+	}
 }
 ```
 ##### Add method structure (Generally used in EF)
 ```sh
 public static void Add(ComicBook comicBook)
 {
-    using (Context context = new Context())
-    {
-        context.ComicBooks.Add(comicBook);      
-        context.SaveChanges();
-    }
+	using (Context context = new Context())
+	{
+		context.ComicBooks.Add(comicBook);      
+		context.SaveChanges();
+	}
 }
 ```
 
@@ -508,20 +508,20 @@ Here we equalize the entities to the update values entered by the user.
 ```sh
 public static void Update(ComicBook comicBook)
 {
-    using (Context context = GetContext())
-    {
-        ComicBook comicBookToUpdate = context.ComicBooks.Find(comicBook.Id);
-        if (comicBookToUpdate != null)
-        {
-            comicBookToUpdate.SeriesId = comicBook.SeriesId;
-            comicBookToUpdate.IssueNumber = comicBook.IssueNumber;
-            comicBookToUpdate.Description = comicBook.Description;
-            comicBookToUpdate.PublishedOn = comicBook.PublishedOn;
-            comicBookToUpdate.AverageRating = comicBook.AverageRating;
-        }
+	using (Context context = GetContext())
+	{
+		ComicBook comicBookToUpdate = context.ComicBooks.Find(comicBook.Id);
+		if (comicBookToUpdate != null)
+		{
+			comicBookToUpdate.SeriesId = comicBook.SeriesId;
+			comicBookToUpdate.IssueNumber = comicBook.IssueNumber;
+			comicBookToUpdate.Description = comicBook.Description;
+			comicBookToUpdate.PublishedOn = comicBook.PublishedOn;
+			comicBookToUpdate.AverageRating = comicBook.AverageRating;
+		}
 
-        context.SaveChanges();
-    }
+		context.SaveChanges();
+	}
 }
 ```
 ##### Update method (2) for this project (EF)
@@ -529,13 +529,13 @@ Here we attach the comic book to the entity. and then we confirm that is enity w
 ```sh
 public static void Update(ComicBook comicBook)
 {
-    using (Context context = GetContext())
-    {
-        context.ComicBooks.Attach(comicBook);
-        var comicBookEntry = context.Entry(comicBook);
-        comicBookEntry.State = EntityState.Modified;
-        context.SaveChanges();
-    }
+	using (Context context = GetContext())
+	{
+		context.ComicBooks.Attach(comicBook);
+		var comicBookEntry = context.Entry(comicBook);
+		comicBookEntry.State = EntityState.Modified;
+		context.SaveChanges();
+	}
 }
 ```
 
@@ -543,12 +543,12 @@ public static void Update(ComicBook comicBook)
 > Note: There might be cases that some entities are not updated so then the upper code will be like
 > 
 ```sh    
-        context.ComicBooks.Attach(comicBook);
-        var comicBookEntry = context.Entry(comicBook);
-        comicBookEntry.State = EntityState.Modified;
-        comicBookEntry.Property("IssueNumber").IsModified = False;
+		context.ComicBooks.Attach(comicBook);
+		var comicBookEntry = context.Entry(comicBook);
+		comicBookEntry.State = EntityState.Modified;
+		comicBookEntry.Property("IssueNumber").IsModified = False;
 
-        context.SaveChanges(); 
+		context.SaveChanges(); 
 ```
    
 
@@ -557,12 +557,12 @@ The input parameter to this method should be an interger of Comic Book Id. the f
 ```sh
 public static void Delete(int comicBookId)
 {
-    using (Context context = GetContext())
-    {
-        ComicBook comicBook = context.ComicBooks.Find(comicBookId);
-        context.ComicBooks.Remove(comicBook);
-        context.SaveChanges();
-    }
+	using (Context context = GetContext())
+	{
+		ComicBook comicBook = context.ComicBooks.Find(comicBookId);
+		context.ComicBooks.Remove(comicBook);
+		context.SaveChanges();
+	}
 }
 ```
 
@@ -572,16 +572,22 @@ If the passed in entity is not in the context EF will attach it and set its stat
 ```sh
 public static void Delete(int comicBookId)
 {
-    using (Context context = GetContext())
-    {
-        ComicBook comicBook= new ComicBook(){Id=comicBookId};
-        context.Entry(comicBook).State = EntityState.Deleted;
-        context.SaveChanges();
-    }
+	using (Context context = GetContext())
+	{
+		ComicBook comicBook= new ComicBook(){Id=comicBookId};
+		context.Entry(comicBook).State = EntityState.Deleted;
+		context.SaveChanges();
+	}
 }
 ```
 
 There are other ORM 
 
-    Nhibernate 
-    Dapper
+	Nhibernate 
+	Dapper
+
+https://docs.microsoft.com/en-us/ef/core/
+
+http://www.entityframeworktutorial.net/
+
+https://blogs.msdn.microsoft.com/dotnet/tag/entity-framework/
