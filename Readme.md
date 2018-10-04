@@ -10,18 +10,18 @@ DROP the DB and start
 Version 1: 
 ```sh
 var comicBooks = context.ComicBooks
-                    .Include("Series")
-                    .ToList();
+					.Include("Series")
+					.ToList();
 ```
 Version 2: using lambda expression
 ```sh
  var comicBooks = context.ComicBooks
-                    .Include(cb=>cb.Series)
-                    .ToList();
-                foreach (var comicBook in comicBooks)
-                {
-                    Console.WriteLine(comicBook.Series.Title);
-                }
+					.Include(cb=>cb.Series)
+					.ToList();
+				foreach (var comicBook in comicBooks)
+				{
+					Console.WriteLine(comicBook.Series.Title);
+				}
 ```
 
 ## Defining a Foreign Key Property
@@ -31,24 +31,24 @@ There are two ways, the first method:
 ```sh
 public class ComicBook
 {
-    public int  Id { get; set; }
-    //Series enity is principal
-    //Comic book is dependent upon a series
-    //many to one relationship
-    public int SeriesRefId { get; set; }
-    [ForeignKey("SeriesRefId")]
-    public Series  Series { get; set; }
-    public int  IssueNumber { get; set; }
-    public string  Description { get; set; }
-    public DateTime  PublishedOn { get; set; }
-    public decimal  AverageRating { get; set; }
+	public int  Id { get; set; }
+	//Series enity is principal
+	//Comic book is dependent upon a series
+	//many to one relationship
+	public int SeriesRefId { get; set; }
+	[ForeignKey("SeriesRefId")]
+	public Series  Series { get; set; }
+	public int  IssueNumber { get; set; }
+	public string  Description { get; set; }
+	public DateTime  PublishedOn { get; set; }
+	public decimal  AverageRating { get; set; }
 
-    //Display Text
-    //getter propety ignored by Ef
-    public string DisplayText
-    {
-        get { return $"{Series?.Title} #{IssueNumber}"; }
-    }
+	//Display Text
+	//getter propety ignored by Ef
+	public string DisplayText
+	{
+		get { return $"{Series?.Title} #{IssueNumber}"; }
+	}
 }
 ```
 
@@ -59,23 +59,23 @@ A navigation property named Series of type Series
 ```sh
 public class ComicBook
 {
-    public int  Id { get; set; }
-    //Series enity is principal
-    //Comic book is dependent upon a series
-    //many to one relationship
-    public int SeriesId { get; set; }
-    public Series  Series { get; set; }
-    public int  IssueNumber { get; set; }
-    public string  Description { get; set; }
-    public DateTime  PublishedOn { get; set; }
-    public decimal  AverageRating { get; set; }
+	public int  Id { get; set; }
+	//Series enity is principal
+	//Comic book is dependent upon a series
+	//many to one relationship
+	public int SeriesId { get; set; }
+	public Series  Series { get; set; }
+	public int  IssueNumber { get; set; }
+	public string  Description { get; set; }
+	public DateTime  PublishedOn { get; set; }
+	public decimal  AverageRating { get; set; }
 
-    //Display Text
-    //getter propety ignored by Ef
-    public string DisplayText
-    {
-        get { return $"{Series?.Title} #{IssueNumber}"; }
-    }
+	//Display Text
+	//getter propety ignored by Ef
+	public string DisplayText
+	{
+		get { return $"{Series?.Title} #{IssueNumber}"; }
+	}
 }
 ```
 
@@ -85,61 +85,61 @@ A default constructor that initializes the ComicBooks property to an instance of
 ```sh
 public class Series
 {
-    // initailize the constructor
-    public Series()
-    {
-        ComicBooks=new List<ComicBook>();
-    }      
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+	// initailize the constructor
+	public Series()
+	{
+		ComicBooks=new List<ComicBook>();
+	}      
+	public int Id { get; set; }
+	public string Title { get; set; }
+	public string Description { get; set; }
 
-    // a Series can be associated to many commic book
-    public ICollection<ComicBook> ComicBooks { get; set; }
+	// a Series can be associated to many commic book
+	public ICollection<ComicBook> ComicBooks { get; set; }
 }
 ```
 ## Many To Many Relationship
 ```sh
 public class Artist
 {
-    public Artist()
-    {
-        ComicBooks= new List<ComicBook>();
-    }
-    public int Id { get; set; }
-    public string Name { get; set; }
+	public Artist()
+	{
+		ComicBooks= new List<ComicBook>();
+	}
+	public int Id { get; set; }
+	public string Name { get; set; }
 	// Comic Book is depenedent on artist
-    public ICollection<ComicBook> ComicBooks { get; set; }
+	public ICollection<ComicBook> ComicBooks { get; set; }
 }
 ```
 in Comic Book
 ```sh
 public class ComicBook
 {
-    public ComicBook()
-    {
-        Artists= new List<Artist>();
-    }
-    public int  Id { get; set; }
-    //Series enity is principal
-    //Comic book is dependent upon a series
-    //many to one relationship
-    public int SeriesId { get; set; }
-    public Series  Series { get; set; }
-    public int  IssueNumber { get; set; }
-    public string  Description { get; set; }
-    public DateTime  PublishedOn { get; set; }
-    public decimal  AverageRating { get; set; }
+	public ComicBook()
+	{
+		Artists= new List<Artist>();
+	}
+	public int  Id { get; set; }
+	//Series enity is principal
+	//Comic book is dependent upon a series
+	//many to one relationship
+	public int SeriesId { get; set; }
+	public Series  Series { get; set; }
+	public int  IssueNumber { get; set; }
+	public string  Description { get; set; }
+	public DateTime  PublishedOn { get; set; }
+	public decimal  AverageRating { get; set; }
 
-    // many to many Relationship
-    public ICollection<Artist> Artists { get; set; }
+	// many to many Relationship
+	public ICollection<Artist> Artists { get; set; }
 
-    //Display Text
-    //getter propety ignored by Ef
-    public string DisplayText
-    {
-        get { return $"{Series?.Title} #{IssueNumber}"; }
-    }
+	//Display Text
+	//getter propety ignored by Ef
+	public string DisplayText
+	{
+		get { return $"{Series?.Title} #{IssueNumber}"; }
+	}
 }
 ```
 
@@ -155,24 +155,24 @@ navigation properties allow you to define relationships between entities.
 ```sh
 public class Role
 {
-    public int  Id { get; set; }
-    public string  Name { get; set; }
+	public int  Id { get; set; }
+	public string  Name { get; set; }
 }
 ```
 and ComicBookArtist
 ```sh
 public class ComicBookArtist
 {
-    public int Id { get; set; }
-    // Foreign Key Property
-    public int ComicBookId { get; set; }
-    public int ArtistId { get; set; }
-    public int RoleId { get; set; }
+	public int Id { get; set; }
+	// Foreign Key Property
+	public int ComicBookId { get; set; }
+	public int ArtistId { get; set; }
+	public int RoleId { get; set; }
 
-    // Navigation Properties
-    public ComicBook ComicBook { get; set; }
-    public Artist Artist { get; set; }
-    public Role Role { get; set; }
+	// Navigation Properties
+	public ComicBook ComicBook { get; set; }
+	public Artist Artist { get; set; }
+	public Role Role { get; set; }
 }
 ```
 
@@ -185,28 +185,28 @@ in the ComicBook class since we will add comic book and each comic book with an 
  // method to add artist a specific Role 
 public void AddArtist(Artist artist, Role role)
 {
-    Artists.Add(new ComicBookArtist()
-    {
-        Artist = artist,
-        Role = role
-    });
+	Artists.Add(new ComicBookArtist()
+	{
+		Artist = artist,
+		Role = role
+	});
 }
 ```
 
 and in the program.cs
 ```sh
-    comicBook3.AddArtist(artist1, role1);
-    comicBook3.AddArtist(artist2, role2);
+	comicBook3.AddArtist(artist1, role1);
+	comicBook3.AddArtist(artist2, role2);
 ``` 
 
 here we use Select to find the path to the child property
 and we update the query
 ```sh
 var comicBooks = context.ComicBooks
-                .Include(cb=>cb.Series)
-                .Include(cb=>cb.Artists.Select(a=>a.Artist))
-                .Include(cb=>cb.Artists.Select(a=>a.Role))
-                .ToList();
+				.Include(cb=>cb.Series)
+				.Include(cb=>cb.Artists.Select(a=>a.Artist))
+				.Include(cb=>cb.Artists.Select(a=>a.Role))
+				.ToList();
 ```
 ## Data Annotations to Refine the Generated Database
 We use data annotations
@@ -232,18 +232,18 @@ we can customize EF's conventions and use EF's fluent API to refine our model.
 ```sh
 protected override void OnModelCreating(DbModelBuilder modelBuilder)
 {
-            
-    // remove pluralize conditions
-    modelBuilder.Conventions.Remove<PluralizingEntitySetNameConvention>();
+			
+	// remove pluralize conditions
+	modelBuilder.Conventions.Remove<PluralizingEntitySetNameConvention>();
 
-    /*  // For Average Rating 
-    modelBuilder.Conventions.Remove<DecimalPropertyConvention>();
-    modelBuilder.Conventions.Add(new DecimalPropertyConvention(5,2));
-    */ 
-    //Bu using fluent API
-    modelBuilder.Entity<ComicBook>()
-        .Property(cb => cb.AverageRating)
-        .HasPrecision(5, 2);
+	/*  // For Average Rating 
+	modelBuilder.Conventions.Remove<DecimalPropertyConvention>();
+	modelBuilder.Conventions.Add(new DecimalPropertyConvention(5,2));
+	*/ 
+	//Bu using fluent API
+	modelBuilder.Entity<ComicBook>()
+		.Property(cb => cb.AverageRating)
+		.HasPrecision(5, 2);
 }
 ```
 
@@ -279,7 +279,7 @@ Console.WriteLine(comicBookI.Count);
 // display the names
 foreach (var comicbooki in comicBookI)
 {
-    Console.WriteLine(comicbooki.DisplayText);
+	Console.WriteLine(comicbooki.DisplayText);
 }
 ```
 Even we can add include with context to get the series title if we want
@@ -287,13 +287,13 @@ Even we can add include with context to get the series title if we want
 
 ```sh
 var comicBookI = context.ComicBooks
-    .Include(cb=>cb.Series)
-    .Where(cb => cb.IssueNumber == 1 && cb.Series.Title=="The amazing Spiderman").ToList();
+	.Include(cb=>cb.Series)
+	.Where(cb => cb.IssueNumber == 1 && cb.Series.Title=="The amazing Spiderman").ToList();
 Console.WriteLine(comicBookI.Count);
 // display the names
 foreach (var comicbooki in comicBookI)
 {
-    Console.WriteLine(comicbooki.DisplayText);
+	Console.WriteLine(comicbooki.DisplayText);
 }
 ```
 
@@ -301,22 +301,22 @@ Contain
 ```sh
  //Filtering Query
 var comicBookI = context.ComicBooks
-    .Include(cb=>cb.Series)
-    .Where(cb =>cb.Series.Title.Contains("The amazing spider")).ToList();
+	.Include(cb=>cb.Series)
+	.Where(cb =>cb.Series.Title.Contains("The amazing spider")).ToList();
 Console.WriteLine(comicBookI.Count);
 // display the names
 foreach (var comicbooki in comicBookI)
 {
-    Console.WriteLine(comicbooki.DisplayText);
+	Console.WriteLine(comicbooki.DisplayText);
 }
 ```
 
 ### Sorting Query
 ```sh
 var comicBookI = context.ComicBooks
-    .Include(cb=>cb.Series)
-    .OrderByDescending(cb=>cb.IssueNumber)
-    .ToList();
+	.Include(cb=>cb.Series)
+	.OrderByDescending(cb=>cb.IssueNumber)
+	.ToList();
 	Console.WriteLine(comicBookI.Count);
 
 	foreach (var comicbooki in comicBookI)
@@ -328,31 +328,31 @@ var comicBookI = context.ComicBooks
 Order by will be used
 ```sh
 var comicBookI = context.ComicBooks
-        .Include(cb=>cb.Series)
-        .OrderByDescending(cb=>cb.IssueNumber)
-        .OrderBy(cb=>cb.PublishedOn)
-        .ToList();
-    Console.WriteLine(comicBookI.Count);
-    // display the names
-    foreach (var comicbooki in comicBookI)
-    {
-        Console.WriteLine(comicbooki.DisplayText);
-    }
+		.Include(cb=>cb.Series)
+		.OrderByDescending(cb=>cb.IssueNumber)
+		.OrderBy(cb=>cb.PublishedOn)
+		.ToList();
+	Console.WriteLine(comicBookI.Count);
+	// display the names
+	foreach (var comicbooki in comicBookI)
+	{
+		Console.WriteLine(comicbooki.DisplayText);
+	}
 ```
 If you want to sort by more
 
 ```sh
 var comicBookI = context.ComicBooks
-        .Include(cb=>cb.Series)
-        .OrderByDescending(cb=>cb.IssueNumber)
-        .ThenBy(cb=>cb.PublishedOn)
-        .ToList();
-    Console.WriteLine(comicBookI.Count);
-    // display the names
-    foreach (var comicbooki in comicBookI)
-    {
-        Console.WriteLine(comicbooki.DisplayText);
-    }
+		.Include(cb=>cb.Series)
+		.OrderByDescending(cb=>cb.IssueNumber)
+		.ThenBy(cb=>cb.PublishedOn)
+		.ToList();
+	Console.WriteLine(comicBookI.Count);
+	// display the names
+	foreach (var comicbooki in comicBookI)
+	{
+		Console.WriteLine(comicbooki.DisplayText);
+	}
 ```
 You see the result query that is executed from the Output
 
@@ -368,32 +368,32 @@ Lazy Loading multiple queries are executed in order tor retrive the data.
 ```sh
 public class ComicBook
 {
-    public ComicBook()
-    {
-        Artists= new List<ComicBookArtist>();
-    }
-    public int  Id { get; set; }
-    //Series enity is principal
-    //Comic book is dependent upon a series
-    //many to one relationship
-    public int SeriesId { get; set; }
-        
-    public int  IssueNumber { get; set; }
-    public string  Description { get; set; }
-    public DateTime  PublishedOn { get; set; }
-    public decimal  AverageRating { get; set; }
+	public ComicBook()
+	{
+		Artists= new List<ComicBookArtist>();
+	}
+	public int  Id { get; set; }
+	//Series enity is principal
+	//Comic book is dependent upon a series
+	//many to one relationship
+	public int SeriesId { get; set; }
+		
+	public int  IssueNumber { get; set; }
+	public string  Description { get; set; }
+	public DateTime  PublishedOn { get; set; }
+	public decimal  AverageRating { get; set; }
 
-    // navigation
-    public virtual Series Series { get; set; }
-    // many to many Relationship
-    public virtual ICollection<ComicBookArtist> Artists { get; set; }
+	// navigation
+	public virtual Series Series { get; set; }
+	// many to many Relationship
+	public virtual ICollection<ComicBookArtist> Artists { get; set; }
 
-    // Display Text
-    // getter propety ignored by Ef
-    public string DisplayText
-    {
-        get { return $"{Series?.Title} #{IssueNumber}"; }
-    }
+	// Display Text
+	// getter propety ignored by Ef
+	public string DisplayText
+	{
+		get { return $"{Series?.Title} #{IssueNumber}"; }
+	}
 }
 ```
 
@@ -438,8 +438,25 @@ var comicBook = context.ComicBooks
 we suggest using dbset queries over find method
 ```sh
  var comicBooks = context.ComicBooks
-              .Include(cb => cb.Series)
-              .Include(cb => cb.Artists.Select(a => a.Artist))
-              .Include(cb => cb.Artists.Select(a => a.Role))
-              .ToList();
+			  .Include(cb => cb.Series)
+			  .Include(cb => cb.Artists.Select(a => a.Artist))
+			  .Include(cb => cb.Artists.Select(a => a.Role))
+			  .ToList();
 ```
+
+
+## Repository 
+All of the code that interact with the Entity framework context class into its own class that is named Repository class.
+We are using the repository class instead of using the context class directly.
+
+  -Retrieve
+  -Create
+  -Update
+  -Delete
+
+
+### DAL (Data Access Layer)
+under this layer we have Repository, Context, Database initializer
+
+### Entities 
+a layer contains entities.
